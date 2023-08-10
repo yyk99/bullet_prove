@@ -7,28 +7,18 @@ import context
 from context import bulletprove
 
 
-class TestStringMethods(unittest.TestCase):
-
-    def test_upper(self):
-        self.assertEqual("foo".upper(), "FOO")
-
-    def test_isupper(self):
-        self.assertTrue("FOO".isupper())
-        self.assertFalse("Foo".isupper())
-
-    def test_split(self):
-        s = "hello world"
-        self.assertEqual(s.split(), ["hello", "world"])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
-
-
-class TestBulletprove(unittest.TestCase):
+class Test_bulletprove(unittest.TestCase):
 
     def test_1(self):
         # print("Here...", dir(bulletprove))
         actual = bulletprove.generator.Generator()
+
+
+class Test_bulletprove_Generator(unittest.TestCase):
+
+    def test_1(self):
+        actual = bulletprove.generator.Generator()
+        actual.generate("out/1/2/3/4/test_1.png")
 
 
 if __name__ == "__main__":
