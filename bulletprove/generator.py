@@ -9,9 +9,13 @@ import os
 
 class Generator:
 
-    def __init__(self):
+    def __init__(self, n_points=10):
         np.random.seed(3)
+        self.n_points = n_points
         pass
+
+    def randomize(self):
+        np.random.seed(123)  # TODO: do it properly
 
     def generate(self, filename: str):
         """generate a single image"""
@@ -20,7 +24,7 @@ class Generator:
         plt.style.use("classic")
 
         # make the data
-        x = 4 + np.random.normal(0, 2, 10)
+        x = 4 + np.random.normal(0, 2, self.n_points)
         y = 4 + np.random.normal(0, 2, len(x))
         # size and color:
         sizes = np.random.uniform(50, 50, len(x))
