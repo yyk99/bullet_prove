@@ -1,0 +1,112 @@
+● Here's a summary of all changes:
+
+  Files rewritten for TensorFlow/Keras
+
+  ┌────────────────────────┬─────────────────────────────────────────────────────┐
+  │          File          │                       Change                        │
+  ├────────────────────────┼─────────────────────────────────────────────────────┤
+  │ bulletprove/model.py   │ Keras functional API U-Net (build_scatter_detector) │
+  ├────────────────────────┼─────────────────────────────────────────────────────┤
+  │ bulletprove/dataset.py │ tf.data.Dataset pipeline via tf.py_function         │
+  ├────────────────────────┼─────────────────────────────────────────────────────┤
+  │ scripts/train.py       │ model.compile() + model.fit(), saves .keras format  │
+  ├────────────────────────┼─────────────────────────────────────────────────────┤
+  │ scripts/detect.py      │ Supports both .keras and .tflite models             │
+  ├────────────────────────┼─────────────────────────────────────────────────────┤
+  │ requirements.txt       │ Replaced torch/torchvision with tensorflow          │
+  └────────────────────────┴─────────────────────────────────────────────────────┘
+
+  New file
+
+  - scripts/export_tflite.py — converts a trained model to TFLite with three modes:
+    - float32 — no quantization, full accuracy
+    - float16 — ~2x smaller, good for mobile GPU
+    - int8 — ~4x smaller, fastest on mobile CPU (needs calibration data)
+
+  Mobile deployment path
+
+  train.py  →  best_model.keras
+               ↓
+  export_tflite.py --quantize int8
+               ↓
+  model_int8.tflite  →  Android (via TFLite Java/Kotlin API)
+                     →  iOS (via TFLite Swift/Objective-C API)
+
+❯ is it possible to convert python training script inot C or C++ ? Would it speed up the training process?
+
+● Short answer: No, it wouldn't meaningfully speed up training — and it's not really feasible.
+
+  Here's why:
+  The Python script is already running C++
+  TensorFlow's Python API is just an orchestration layer. When you call model.fit(), virtually all the computation — convolutions, matrix
+  multiplications, backpropagation — executes inside TensorFlow's C++/CUDA kernel. Python contributes maybe 1-2% of the total training time.
+
+  model.fit()   ← Python: microseconds
+      ↓
+  TF C++ runtime: Conv2D, BatchNorm, gradient computation   ← where 99% of time is spent
+      ↓
+  CUDA kernels on GPU (or Eigen on CPU)
+  Rewriting the orchestration in C++ would save almost nothing.
+  What would actually speed up training
+
+  In rough order of impact:
+  1. Use a GPU — if not already. TF automatically uses one if available; this alone gives 10–50x speedup over CPU.
+  2. Fix the data loading bottleneck — the current tf.py_function with PIL/scipy runs in Python and blocks the pipeline. Replace with native TF
+  ops:
+
+  # Instead of PIL + py_function:
+  tf.io.read_file() → tf.image.decode_png() → tf.image.resize()
+
+  3. Mixed precision training — use float16 for compute, float32 for weights:
+  tf.keras.mixed_precision.set_global_policy("mixed_float16")
+
+  4. Larger batch size — better GPU utilization.
+
+  5. Smaller model — the U-Net is already lightweight, but reducing filter counts would help if accuracy allows.
+  Where C/C++ does make sense in this project
+
+  Not in training, but in inference on embedded/mobile devices — which is exactly what export_tflite.py is for.
+
+  TFLite with INT8 quantization runs a hand-optimized C++ inference engine, which is why it's the right choice for the mobile app.
+
+❯ W0000 00:00:1775128106.851190   41307 cpu_allocator_impl.cc:82] Allocation of 268435456 exceeds 10% of free system memory.
+  ⎿  [Image #5]
+
+● Good progress — most dots are now detected. The remaining issues (off-center circles,
+  a few missed dots in the cluster) are training quality problems, not code bugs. The model hasn't fully converged.
+
+  The memory warning (268MB) also suggests the system is memory-constrained, which hurts training stability.
+
+  Two things to improve results:
+
+  1. Generate more training data — 500 images is too few:
+  python scripts/generate_data.py --n_images 2000
+
+  2. Retrain with a smaller batch size to ease memory pressure:
+  python scripts/train.py --batch_size 8 --epochs 100
+
+  The smaller batch means more gradient updates per epoch, which compensates for fewer samples in memory at once.
+  100 epochs gives the model more time to converge on precise centers.
+
+  If you want to track progress during training, watch for the val_loss steadily decreasing —
+  a stalled or oscillating loss means the model has stopped learning and you can stop early.
+
+● python scripts/visualize_model.py
+
+  This produces net_structure.png showing:
+
+  Input(256×256×3)
+      │
+  [Encoder 1] ─ ─ ─ skip + concat ─ ─ ─ [Decoder 1]
+      │ MaxPool÷2                          ↑ Upsample×2
+  [Encoder 2] ─ ─ ─ skip + concat ─ ─ ─ [Decoder 2]
+      │ MaxPool÷2                          ↑ Upsample×2
+  [Encoder 3] ─ ─ ─ skip + concat ─ ─ ─ [Decoder 3]
+      │ MaxPool÷2                          ↑ Upsample×2
+           [Bridge] ──────────────────────
+                                           │ Conv1×1→ReLU
+                                        Output(256×256×1)
+
+  Each block is colour-coded (blue=encoder, purple=bridge, green=decoder),
+  skip connections are shown as dashed red arrows with their channel concatenation counts, and every operation
+  between blocks is labelled. Use --output and --dpi to control where it's saved and at what resolution.

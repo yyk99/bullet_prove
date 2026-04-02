@@ -164,3 +164,8 @@ cython_debug/
 *~
 out/
 .vs/
+#
+#
+#
+checkpoints/
+net_structure.png
