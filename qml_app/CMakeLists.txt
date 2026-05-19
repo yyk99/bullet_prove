@@ -19,6 +19,10 @@ qt_add_qml_module(BulletProveApp
         Main.qml
 )
 
+if(MSVC)
+    target_compile_options(BulletProveApp PUBLIC "/Zc:__cplusplus;/permissive-")
+endif()
+
 target_link_libraries(BulletProveApp
     PRIVATE
         Qt6::Quick
