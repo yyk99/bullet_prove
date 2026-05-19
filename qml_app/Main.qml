@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs
 
 // On mobile the OS stretches this window to fill the screen.
 // On desktop it opens as a fixed 400x640 window.
@@ -10,6 +11,16 @@ ApplicationWindow {
     width: 400
     height: 640
     title: qsTr("Bullet Prove")
+
+    FileDialog {
+        id: fileDialog
+        title: qsTr("Open target image")
+        nameFilters: [
+            qsTr("Image files (*.jpg *.jpeg *.png *.bmp *.heic)"),
+            qsTr("All files (*)")
+        ]
+        onAccepted: targetImage.source = fileDialog.selectedFile
+    }
 
     ColumnLayout {
         anchors {
@@ -34,7 +45,7 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignHCenter
         }
 
-        // Placeholder target image area
+        // Target image area
         Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 16
@@ -44,11 +55,21 @@ ApplicationWindow {
             border.color: palette.mid
             border.width: 1
             radius: 4
+            clip: true
+
+            Image {
+                id: targetImage
+                anchors.fill: parent
+                anchors.margins: 4
+                fillMode: Image.PreserveAspectFit
+                visible: source != ""
+            }
 
             Label {
                 anchors.centerIn: parent
                 text: qsTr("No image loaded")
                 color: palette.mid
+                visible: targetImage.source == ""
             }
         }
 
@@ -58,18 +79,7 @@ ApplicationWindow {
             Layout.topMargin: 8
             Layout.minimumWidth: 200
             Layout.minimumHeight: 48
-            onClicked: statusLabel.text = qsTr("(image loading not yet implemented)")
-        }
-
-        Label {
-            id: statusLabel
-            text: ""
-            color: palette.mid
-            font.pixelSize: 12
-            Layout.alignment: Qt.AlignHCenter
-            wrapMode: Text.WordWrap
-            Layout.fillWidth: true
-            horizontalAlignment: Text.AlignHCenter
+            onClicked: fileDialog.open()
         }
     }
 }

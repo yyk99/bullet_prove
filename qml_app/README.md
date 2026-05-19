@@ -9,7 +9,9 @@ single codebase.
 |---|---|
 | `CMakeLists.txt` | Qt6 CMake build; QML module URI is `BulletProve` |
 | `main.cpp` | Selects a platform-native Controls style, loads the QML module |
-| `Main.qml` | Shared UI: title, image placeholder, Load button |
+| `Main.qml` | Shared UI: title, image area with file dialog, Load button |
+| `CMakePresets.json` | Shared configure/build presets (tracked in git) |
+| `CMakeUserPresets.json` | Machine-specific presets that inherit from the shared ones |
 
 ## Platform styles
 
@@ -42,25 +44,39 @@ Or switch at runtime without recompiling:
 QSG_RHI_BACKEND=vulkan ./BulletProveApp
 ```
 
-## Build
+## Build with presets
 
-### Desktop
+`CMakePresets.json` defines shared presets. `CMakeUserPresets.json` provides
+machine-local overrides (Qt installation path, NDK path) that inherit from them.
+
+### List available presets
+
+```bash
+cmake --list-presets
+```
+
+### Desktop (kestrel)
+
+```bash
+cmake --preset kestrel-debug
+cmake --build --preset kestrel-debug
+./build/kestrel-debug/BulletProveApp
+```
+
+### Android (kestrel)
+
+```bash
+cmake --preset kestrel-android-arm64-debug
+cmake --build --preset kestrel-android-arm64-debug
+```
+
+Android packaging (APK/AAB) is handled by Qt Creator or
+`androiddeployqt` from the Qt installation.
+
+### Build without presets
 
 ```bash
 cmake -B build -S . -DCMAKE_PREFIX_PATH=/home/yyk/Qt/6.8.1/gcc_64
 cmake --build build
 ./build/BulletProveApp
 ```
-
-### Android
-
-```bash
-cmake -B build-android -S . \
-  -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
-  -DANDROID_ABI=arm64-v8a \
-  -DCMAKE_PREFIX_PATH=/path/to/Qt6/android_arm64_v8a
-cmake --build build-android
-```
-
-Android packaging (APK/AAB) is handled by Qt Creator or
-`androiddeployqt` from the Qt installation.

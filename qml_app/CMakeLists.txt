@@ -4,7 +4,7 @@ project(BulletProveApp VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Quick QuickControls2 QuickDialogs2)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
@@ -23,6 +23,7 @@ target_link_libraries(BulletProveApp
     PRIVATE
         Qt6::Quick
         Qt6::QuickControls2
+        Qt6::QuickDialogs2
 )
 
 # Required for macOS bundle and Windows GUI subsystem

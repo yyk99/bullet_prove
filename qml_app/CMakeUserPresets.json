@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "kestrel-debug",
+      "displayName": "Linux Desktop - Debug (kestrel)",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/gcc_64"
+      }
+    },
+    {
+      "name": "kestrel-release",
+      "displayName": "Linux Desktop - Release (kestrel)",
+      "inherits": "linux-release",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/gcc_64"
+      }
+    },
+    {
+      "name": "kestrel-android-arm64-debug",
+      "displayName": "Android arm64-v8a - Debug (kestrel)",
+      "inherits": "android-arm64-debug",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/android_arm64_v8a",
+        "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "kestrel-debug",
+      "configurePreset": "kestrel-debug"
+    },
+    {
+      "name": "kestrel-release",
+      "configurePreset": "kestrel-release"
+    },
+    {
+      "name": "kestrel-android-arm64-debug",
+      "configurePreset": "kestrel-android-arm64-debug"
+    }
+  ]
+}
