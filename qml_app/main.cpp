@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 #endif
 
     QQmlApplicationEngine engine;
-    engine.loadFromModule("BulletProveApp", "Main");
+    engine.loadFromModule("BulletProve", "Main");
 
     return engine.rootObjects().isEmpty() ? -1 : app.exec();
 }

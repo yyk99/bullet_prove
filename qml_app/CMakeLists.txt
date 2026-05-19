@@ -13,7 +13,7 @@ qt_add_executable(BulletProveApp
 )
 
 qt_add_qml_module(BulletProveApp
-    URI BulletProveApp
+    URI BulletProve
     VERSION 1.0
     QML_FILES
         Main.qml
