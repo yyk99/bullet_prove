@@ -80,3 +80,9 @@ cmake -B build -S . -DCMAKE_PREFIX_PATH=/home/yyk/Qt/6.8.1/gcc_64
 cmake --build build
 ./build/BulletProveApp
 ```
+
+or (in Windows)
+
+    cmake -B build -S . -DCMAKE_PREFIX_PATH:UNINITIALIZED=E:/qt6/6.6.0/msvc2019_64
+    cmake --build build
+
