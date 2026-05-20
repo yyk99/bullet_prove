@@ -41,7 +41,7 @@
       "name": "windows",
       "displayName": "Windows Desktop",
       "inherits": "base",
-      "generator": "Ninja Multi-Config"
+      "generator": "Visual Studio 17 2022"
     }
   ],
   "buildPresets": [
