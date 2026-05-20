@@ -16,6 +16,27 @@ int main(int argc, char *argv[])
 #endif
 
     QQmlApplicationEngine engine;
+
+    // objectCreationFailed is emitted synchronously when the root component
+    // cannot be created (QML syntax error, missing import, missing type, etc.).
+    // QML engine already prints the individual errors to stderr; we add a
+    // summary with actionable hints so the cause is obvious at a glance.
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() {
+            qCritical("\n"
+                      "Fatal: QML root object could not be created.\n"
+                      "Likely causes:\n"
+                      "  - QML syntax error in Main.qml (see errors above)\n"
+                      "  - 'BulletProve' module not found on the QML import path\n"
+                      "  - Qt Quick Controls or QuickDialogs2 libraries missing\n"
+                      "Tip: set QML_IMPORT_TRACE=1 to trace import resolution.");
+            QCoreApplication::exit(-1);
+        },
+        Qt::DirectConnection);
+
     engine.loadFromModule("BulletProve", "Main");
 
     return engine.rootObjects().isEmpty() ? -1 : app.exec();
