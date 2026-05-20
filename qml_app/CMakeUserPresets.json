@@ -25,6 +25,17 @@
         "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/android_arm64_v8a",
         "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
       }
+    },
+    {
+      "name": "quagga",
+      "displayName": "Windows Desktop (quagga)",
+      "inherits": "windows",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": {
+          "type": "UNINITIALIZED",
+          "value": "E:/qt6/6.6.0/msvc2019_64"
+        }
+      }
     }
   ],
   "buildPresets": [
@@ -39,6 +50,16 @@
     {
       "name": "kestrel-android-arm64-debug",
       "configurePreset": "kestrel-android-arm64-debug"
+    },
+    {
+      "name": "quagga-debug",
+      "configurePreset": "quagga",
+      "configuration": "Debug"
+    },
+    {
+      "name": "quagga-release",
+      "configurePreset": "quagga",
+      "configuration": "Release"
     }
   ]
 }

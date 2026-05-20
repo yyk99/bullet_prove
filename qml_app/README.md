@@ -73,6 +73,20 @@ cmake --build --preset kestrel-android-arm64-debug
 Android packaging (APK/AAB) is handled by Qt Creator or
 `androiddeployqt` from the Qt installation.
 
+### Windows Desktop (quagga)
+
+The Windows preset uses `Ninja Multi-Config`, so configure once and build
+either configuration without re-running CMake:
+
+```cmd
+cmake --preset quagga
+cmake --build --preset quagga-debug
+cmake --build --preset quagga-release
+```
+
+Qt path is set to `E:/qt6/6.6.0/msvc2019_64` via `CMAKE_PREFIX_PATH:UNINITIALIZED`
+(the `UNINITIALIZED` type prevents CMake from mangling the Windows path separators).
+
 ### Build without presets
 
 ```bash
