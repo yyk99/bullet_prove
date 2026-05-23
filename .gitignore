@@ -170,3 +170,6 @@ out/
 checkpoints/
 net_structure.png
 *.bak
+/data2
+/data3
+/checkpoints
