@@ -27,6 +27,22 @@
       }
     },
     {
+      "name": "silvana-debug",
+      "displayName": "Linux Desktop - Debug (silvana)",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Downloads/qt-everywhere-src-6.11.1/qtbase/"
+      }
+    },
+    {
+      "name": "silvana-release",
+      "displayName": "Linux Desktop - Release (silvana)",
+      "inherits": "linux-release",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Downloads/qt-everywhere-src-6.11.1/qtbase/"
+      }
+    },
+    {
       "name": "quagga",
       "displayName": "Windows Desktop (quagga)",
       "inherits": "windows",
@@ -39,6 +55,14 @@
     }
   ],
   "buildPresets": [
+    {
+      "name": "silvana-debug",
+      "configurePreset": "silvana-debug"
+    },
+    {
+      "name": "silvana-release",
+      "configurePreset": "silvana-release"
+    },
     {
       "name": "kestrel-debug",
       "configurePreset": "kestrel-debug"
