@@ -46,37 +46,45 @@ QSG_RHI_BACKEND=vulkan ./BulletProveApp
 
 ## Build with presets
 
-`CMakePresets.json` defines shared presets. `CMakeUserPresets.json` provides
-machine-local overrides (Qt installation path, NDK path) that inherit from them.
+All shared presets use `Ninja Multi-Config`, so each platform requires only
+one configure step; Debug and Release are selected at build time.
+`CMakeUserPresets.json` provides machine-local overrides (Qt path, NDK path).
 
 ### List available presets
 
 ```bash
-cmake --list-presets
+cmake --list-presets        # configure presets
+cmake --list-presets build  # build presets
 ```
 
-### Desktop (kestrel)
+### Desktop — kestrel (Qt 6.8, installed)
 
 ```bash
-cmake --preset kestrel-debug
+cmake --preset kestrel
 cmake --build --preset kestrel-debug
-./build/kestrel-debug/BulletProveApp
+cmake --build --preset kestrel-release
+./build/kestrel/Debug/BulletProveApp
 ```
 
-### Android (kestrel)
+### Desktop — silvana (Qt 6.11, built from source)
 
 ```bash
-cmake --preset kestrel-android-arm64-debug
+cmake --preset silvana
+cmake --build --preset silvana-debug
+cmake --build --preset silvana-release
+```
+
+### Android — kestrel
+
+```bash
+cmake --preset kestrel-android-arm64
 cmake --build --preset kestrel-android-arm64-debug
 ```
 
 Android packaging (APK/AAB) is handled by Qt Creator or
 `androiddeployqt` from the Qt installation.
 
-### Windows Desktop (quagga)
-
-The Windows preset uses `Ninja Multi-Config`, so configure once and build
-either configuration without re-running CMake:
+### Windows Desktop — quagga (Visual Studio 17 2022)
 
 ```cmd
 cmake --preset quagga
@@ -99,4 +107,3 @@ or (in Windows)
 
     cmake -B build -S . -DCMAKE_PREFIX_PATH:UNINITIALIZED=E:/qt6/6.6.0/msvc2019_64
     cmake --build build
-

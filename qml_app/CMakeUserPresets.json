@@ -2,42 +2,26 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "kestrel-debug",
-      "displayName": "Linux Desktop - Debug (kestrel)",
-      "inherits": "linux-debug",
+      "name": "kestrel",
+      "displayName": "Linux Desktop (kestrel)",
+      "inherits": "linux",
       "cacheVariables": {
         "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/gcc_64"
       }
     },
     {
-      "name": "kestrel-release",
-      "displayName": "Linux Desktop - Release (kestrel)",
-      "inherits": "linux-release",
-      "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/gcc_64"
-      }
-    },
-    {
-      "name": "kestrel-android-arm64-debug",
-      "displayName": "Android arm64-v8a - Debug (kestrel)",
-      "inherits": "android-arm64-debug",
+      "name": "kestrel-android-arm64",
+      "displayName": "Android arm64-v8a (kestrel)",
+      "inherits": "android-arm64",
       "cacheVariables": {
         "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/android_arm64_v8a",
         "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
       }
     },
     {
-      "name": "silvana-debug",
-      "displayName": "Linux Desktop - Debug (silvana)",
-      "inherits": "linux-debug",
-      "cacheVariables": {
-        "CMAKE_PREFIX_PATH": "/home/yyk/Downloads/qt-everywhere-src-6.11.1/qtbase/"
-      }
-    },
-    {
-      "name": "silvana-release",
-      "displayName": "Linux Desktop - Release (silvana)",
-      "inherits": "linux-release",
+      "name": "silvana",
+      "displayName": "Linux Desktop (silvana)",
+      "inherits": "linux",
       "cacheVariables": {
         "CMAKE_PREFIX_PATH": "/home/yyk/Downloads/qt-everywhere-src-6.11.1/qtbase/"
       }
@@ -56,24 +40,29 @@
   ],
   "buildPresets": [
     {
-      "name": "silvana-debug",
-      "configurePreset": "silvana-debug"
-    },
-    {
-      "name": "silvana-release",
-      "configurePreset": "silvana-release"
-    },
-    {
       "name": "kestrel-debug",
-      "configurePreset": "kestrel-debug"
+      "configurePreset": "kestrel",
+      "configuration": "Debug"
     },
     {
       "name": "kestrel-release",
-      "configurePreset": "kestrel-release"
+      "configurePreset": "kestrel",
+      "configuration": "Release"
     },
     {
       "name": "kestrel-android-arm64-debug",
-      "configurePreset": "kestrel-android-arm64-debug"
+      "configurePreset": "kestrel-android-arm64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "silvana-debug",
+      "configurePreset": "silvana",
+      "configuration": "Debug"
+    },
+    {
+      "name": "silvana-release",
+      "configurePreset": "silvana",
+      "configuration": "Release"
     },
     {
       "name": "quagga-debug",
