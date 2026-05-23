@@ -1,0 +1,78 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "kestrel",
+      "displayName": "Linux Desktop (kestrel)",
+      "inherits": "linux",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/gcc_64"
+      }
+    },
+    {
+      "name": "kestrel-android-arm64",
+      "displayName": "Android arm64-v8a (kestrel)",
+      "inherits": "android-arm64",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Qt/6.8.1/android_arm64_v8a",
+        "CMAKE_TOOLCHAIN_FILE": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
+      }
+    },
+    {
+      "name": "silvana",
+      "displayName": "Linux Desktop (silvana)",
+      "inherits": "linux",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "/home/yyk/Downloads/qt-everywhere-src-6.11.1/qtbase/"
+      }
+    },
+    {
+      "name": "quagga",
+      "displayName": "Windows Desktop (quagga)",
+      "inherits": "windows",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": {
+          "type": "UNINITIALIZED",
+          "value": "E:/qt6/6.6.0/msvc2019_64"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "kestrel-debug",
+      "configurePreset": "kestrel",
+      "configuration": "Debug"
+    },
+    {
+      "name": "kestrel-release",
+      "configurePreset": "kestrel",
+      "configuration": "Release"
+    },
+    {
+      "name": "kestrel-android-arm64-debug",
+      "configurePreset": "kestrel-android-arm64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "silvana-debug",
+      "configurePreset": "silvana",
+      "configuration": "Debug"
+    },
+    {
+      "name": "silvana-release",
+      "configurePreset": "silvana",
+      "configuration": "Release"
+    },
+    {
+      "name": "quagga-debug",
+      "configurePreset": "quagga",
+      "configuration": "Debug"
+    },
+    {
+      "name": "quagga-release",
+      "configurePreset": "quagga",
+      "configuration": "Release"
+    }
+  ]
+}

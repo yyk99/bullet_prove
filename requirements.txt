@@ -1,2 +1,5 @@
-pytest
 matplotlib
+numpy
+Pillow
+scipy
+tensorflow
