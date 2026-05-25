@@ -1,0 +1,5 @@
+[core]
+    remote = s3remote
+['remote "s3remote"']
+    url = s3://bullet-prove-data-490954040359-us-east-1-an/bullet-prove/
+    region = us-east-1

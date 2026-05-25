@@ -10,6 +10,8 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+For DVC setup (binary data and model versioning via S3) see [README.dvc.md](README.dvc.md).
+
 ## ML pipeline
 
 ### 1. Generate training data
